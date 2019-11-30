@@ -30,7 +30,7 @@ func NewManager(ec *ethclient.Client, vmAddress string, auth *bind.TransactOpts)
 	}, err
 }
 
-// GetAllGameJamAddresses gets all deployed game jam addresses
-// func (m *Manager) GetAllGameJamAddresses() ([]common.Address, error) {
-// 	return m.manager.GetAllGameJamAddresses(&bind.CallOpts{Pending: true})
-// }
+// GetAllVaultAddresses gets all deployed game jam addresses
+func (m *Manager) GetAllVaultAddresses() ([]common.Address, error) {
+	return m.manager.GetVaults(&bind.CallOpts{Pending: true})
+}

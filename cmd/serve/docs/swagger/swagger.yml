@@ -18,7 +18,7 @@ paths:
   /ipfs-media-platform/health/status:
     get:
       tags:
-      - project-template
+      - ipfs-media-platform
       summary: Check the health of the service
       operationId: healthCheck
       responses:
@@ -39,6 +39,21 @@ paths:
       security:
       - auth:
         - bam:access
+  /ipfs-media-platform/manager/get-all-vaults:
+    get:
+      tags:
+      - ipfs-media-platform
+      summary: Get all vaults
+      operationId: getVaults
+      responses:
+        200:
+          description: healthy response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AllAddresses'
 components:
   schemas:
     Health:
@@ -47,6 +62,15 @@ components:
         message:
           type: string
           example: Healthy response from service at - 2019-10-28 01:15:49.392631014 +0000 GMT m=+72.576498242
+        statusCode:
+          type: number
+          example: 200
+    AllAddresses:
+      type: object
+      properties:
+        addressList:
+          type: string
+          example: 0xA116c0dF8048741AAA9f6C46118faA92527b6221
         statusCode:
           type: number
           example: 200

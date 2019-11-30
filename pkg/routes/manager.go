@@ -1,7 +1,7 @@
 package routes
 
 import (
-	"fmt"
+	"encoding/json"
 	"net/http"
 
 	"github.com/IPFS-Media-Platform/vault-abstraction/pkg/config"
@@ -53,35 +53,33 @@ func (r *ManagerResource) Routes() http.Handler {
 		log.WithError(err).Error("Failed to create game jam manager")
 	}
 
-	fmt.Println(vaultManagerContract)
-
-	// router.Get("/get-all-gamejams", r.getAllAddresses(gameJamManagerContract))
+	router.Get("/get-all-vaults", r.getAllAddresses(vaultManagerContract))
 
 	log.WithFields(log.Fields{"Contract": "Vault Manager", "Address": r.config.Contracts.VaultManagerAddress}).Info("Created manager abstraction")
 
 	return router
 }
 
-// func (r *ManagerResource) getAllAddresses(gm *gamejammanager.Manager) http.HandlerFunc {
-// 	return func(res http.ResponseWriter, req *http.Request) {
+func (r *ManagerResource) getAllAddresses(vm *vaultmanager.Manager) http.HandlerFunc {
+	return func(res http.ResponseWriter, req *http.Request) {
 
-// 		// gameJamAddressList, err := gm.GetAllGameJamAddresses()
-// 		if err != nil {
-// 			log.WithError(err).Error("GetAllGameJamAddresses function on Game Manager contract failed")
-// 		}
+		vaultAddressesList, err := vm.GetAllVaultAddresses()
+		if err != nil {
+			log.WithError(err).Error("GetAllGameJamAddresses function on Game Manager contract failed")
+		}
 
-// 		payload := struct {
-// 			AddressList string `json:"addressList"`
-// 			StatusCode  int    `json:"statusCode"`
-// 		}{
-// 			gameJamAddressList[0].String(),
-// 			200,
-// 		}
+		payload := struct {
+			AddressList string `json:"addressList"`
+			StatusCode  int    `json:"statusCode"`
+		}{
+			vaultAddressesList[0].String(),
+			200,
+		}
 
-// 		json, err := json.Marshal(payload)
+		json, err := json.Marshal(payload)
 
-// 		res.Header().Set("Content-Type", "application/json")
-// 		res.WriteHeader(200)
-// 		res.Write(json)
-// 	}
-// }
+		res.Header().Set("Content-Type", "application/json")
+		res.WriteHeader(200)
+		res.Write(json)
+	}
+}

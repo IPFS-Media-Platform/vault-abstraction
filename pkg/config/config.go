@@ -20,6 +20,18 @@ type Config struct {
 	Name           string `yaml:"name"`
 	Port           int    `yaml:"port"`
 	MetricsEnabled bool   `yaml:"metrics"`
+	Contracts      struct {
+		VaultManagerAddress string `yaml:"vaultManagerAddress"`
+	} `yaml:"contracts"`
+
+	Keys struct {
+		Admin string `yaml:"admin"`
+	} `yaml:"keys"`
+
+	Infura struct {
+		URL string `yaml:"url"`
+		Key string `yaml:"key"`
+	} `yaml:"infura"`
 }
 
 // NewConfig constructs a new *server.Config instance with defaults

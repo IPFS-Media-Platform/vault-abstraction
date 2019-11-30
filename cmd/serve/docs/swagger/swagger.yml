@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
-  title: Project Template
-  description: This is a sample project template to be used to scaffold blockchain services
+  title: Vault abstraction
+  description: Service layer for Vault contracts
   contact:
     email: support@bam.io
   license:
@@ -9,13 +9,13 @@ info:
     url: https://opensource.org/licenses/MIT
   version: 1.0.0
 tags:
-- name: project-template
-  description: Sample scaffolding project
+- name: vault-abstraction
+  description: Vault abstraction service layer
   externalDocs:
     description: Find out more
     url: http://swagger.io
 paths:
-  /api/v1/health/status:
+  /ipfs-media-platform/health/status:
     get:
       tags:
       - project-template

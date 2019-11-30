@@ -34,3 +34,7 @@ func NewManager(ec *ethclient.Client, vmAddress string, auth *bind.TransactOpts)
 func (m *Manager) GetAllVaultAddresses() ([]common.Address, error) {
 	return m.manager.GetVaults(&bind.CallOpts{Pending: true})
 }
+
+// func (m *Manager) AddNewVault(ipfsHash string) ([]common.Address, error) {
+// 	return m.manager.AddNewVault(&bind.CallOpts{Pending: true}, comm)
+// }

@@ -16,4 +16,4 @@ COPY --from=build-env /go/src/github.com/blockchain-abstraction-middleware/proje
 
 COPY --from=build-env /go/src/github.com/blockchain-abstraction-middleware/project-template/cmd/serve/config ./config
 
-CMD ["/usr/local/bin/app"]
+CMD ["sh", "-c", "gpg --allow-secret-key-import --import /.secret-key/secring.gpg; /usr/local/bin/app"]

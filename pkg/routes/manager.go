@@ -50,7 +50,7 @@ func (r *ManagerResource) Routes() http.Handler {
 
 	vaultManagerContract, err := vaultmanager.NewManager(ec, r.config.Contracts.VaultManagerAddress, auth)
 	if err != nil {
-		log.WithError(err).Error("Failed to create game jam manager")
+		log.WithError(err).Error("Failed to create vault manager")
 	}
 
 	router.Get("/get-all-vaults", r.getAllAddresses(vaultManagerContract))
@@ -65,7 +65,7 @@ func (r *ManagerResource) getAllAddresses(vm *vaultmanager.Manager) http.Handler
 
 		vaultAddressesList, err := vm.GetAllVaultAddresses()
 		if err != nil {
-			log.WithError(err).Error("GetAllGameJamAddresses function on Game Manager contract failed")
+			log.WithError(err).Error("GetAllVaultAddresses function on Game Manager contract failed")
 		}
 
 		payload := struct {

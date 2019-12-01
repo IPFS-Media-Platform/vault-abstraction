@@ -5,11 +5,14 @@ import (
 	"net/http"
 
 	"github.com/IPFS-Media-Platform/vault-abstraction/pkg/config"
+	"github.com/IPFS-Media-Platform/vault-abstraction/pkg/contracts/Vault"
 	"github.com/IPFS-Media-Platform/vault-abstraction/pkg/ethereum"
 	"github.com/IPFS-Media-Platform/vault-abstraction/pkg/vaultmanager"
 	log "github.com/blockchain-abstraction-middleware/rest-api/pkg/logger"
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
+	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/crypto"
+	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/go-chi/chi"
 )
 
@@ -54,7 +57,7 @@ func (r *ManagerResource) Routes() http.Handler {
 		log.WithError(err).Error("Failed to create vault manager")
 	}
 
-	router.Get("/get-all-vaults", r.getAllAddresses(vaultManagerContract))
+	router.Get("/get-all-vaults", r.getAllAddresses(vaultManagerContract, ec))
 	router.Post("/add-vault", r.addNewVault(vaultManagerContract))
 
 	log.WithFields(log.Fields{"Contract": "Vault Manager", "Address": r.config.Contracts.VaultManagerAddress}).Info("Created manager abstraction")
@@ -62,7 +65,11 @@ func (r *ManagerResource) Routes() http.Handler {
 	return router
 }
 
-func (r *ManagerResource) getAllAddresses(vm *vaultmanager.Manager) http.HandlerFunc {
+type VaultResponse struct {
+	IpfsHash [50]string
+}
+
+func (r *ManagerResource) getAllAddresses(vm *vaultmanager.Manager, ec *ethclient.Client) http.HandlerFunc {
 	return func(res http.ResponseWriter, req *http.Request) {
 
 		vaultAddressesList, err := vm.GetAllVaultAddresses()
@@ -70,12 +77,19 @@ func (r *ManagerResource) getAllAddresses(vm *vaultmanager.Manager) http.Handler
 			log.WithError(err).Error("GetAllVaultAddresses function on Game Manager contract failed")
 		}
 
-		payload := struct {
-			AddressList string `json:"addressList"`
-			StatusCode  int    `json:"statusCode"`
-		}{
-			vaultAddressesList[0].String(),
-			200,
+		var ipfsHashes [50]string
+		for i, address := range vaultAddressesList {
+			vault, err := Vault.NewVault(common.HexToAddress(address.String()), ec)
+			if err != nil {
+				log.Fatal("Wrong", err)
+			}
+
+			vaultIpfsHash, err := vault.Get(&bind.CallOpts{Pending: true})
+			ipfsHashes[i] = vaultIpfsHash
+		}
+
+		payload := &VaultResponse{
+			IpfsHash: ipfsHashes,
 		}
 
 		json, err := json.Marshal(payload)

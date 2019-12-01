@@ -36,9 +36,14 @@ Swagger ui will be exposed at:
 ```
 
 ### Endpoints
+Get All Vaults
+```
+curl 0.0.0.0:8080/ipfs-media-platform/manager/get-all-vaults
 
 ```
-curl -H "Content-Type: application/json" -X POST -d '{"ipfsHash":"QmW3FgNGeD46kHEryFUw1ftEUqRw254WkKxYeKaouz7DJA", "name":"hope"}' 0.0.0.0:8080/ipfs-media-platform/manager/add-vault
-```
 
-curl -H "accept: application/json" -H "Content-Type: application/json" -X POST -d 'ipfsHash=123dsad&name=name' 0.0.0.0:8080/ipfs-media-platform/manager/add-vault
+
+Add Vault
+```
+curl -H "accept: application/json" -H "Content-Type: application/json" -X POST -d '{"ipfsHash":"QmW3FgNGeD46kHEryFUw1ftEUqRw254WkKxYeKaouz7DJA", "name":"hope22"}' 0.0.0.0:8080/ipfs-media-platform/manager/add-vault
+```

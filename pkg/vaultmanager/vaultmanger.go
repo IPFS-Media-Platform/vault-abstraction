@@ -1,9 +1,12 @@
 package vaultmanager
 
 import (
+	"math/big"
+
 	"github.com/IPFS-Media-Platform/vault-abstraction/pkg/contracts/VaultManager"
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/ethclient"
 )
 
@@ -35,6 +38,14 @@ func (m *Manager) GetAllVaultAddresses() ([]common.Address, error) {
 	return m.manager.GetVaults(&bind.CallOpts{Pending: true})
 }
 
-// func (m *Manager) AddNewVault(ipfsHash string) ([]common.Address, error) {
-// 	return m.manager.AddNewVault(&bind.CallOpts{Pending: true}, comm)
-// }
+// Adds A New vault to
+func (m *Manager) AddNewVault(name string, ipfsHash string) (*types.Transaction, error) {
+	txnOpts := &bind.TransactOpts{
+		From:     m.auth.From,
+		Signer:   m.auth.Signer,
+		GasLimit: 2381623,
+		Value:    big.NewInt(0),
+	}
+
+	return m.manager.AddNewVault(txnOpts, name, ipfsHash)
+}

@@ -28,7 +28,7 @@ var (
 )
 
 // VaultManagerABI is the input ABI used to generate the binding from.
-const VaultManagerABI = "[{\"constant\":true,\"inputs\":[{\"name\":\"\",\"type\":\"string\"}],\"name\":\"vaultList\",\"outputs\":[{\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"name\",\"type\":\"string\"},{\"indexed\":false,\"name\":\"vaultAddress\",\"type\":\"address\"}],\"name\":\"VaultAdded\",\"type\":\"event\"},{\"constant\":false,\"inputs\":[{\"name\":\"_name\",\"type\":\"string\"}],\"name\":\"addNewVault\",\"outputs\":[{\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"getVaults\",\"outputs\":[{\"name\":\"\",\"type\":\"address[]\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"}]"
+const VaultManagerABI = "[{\"constant\":true,\"inputs\":[{\"name\":\"\",\"type\":\"string\"}],\"name\":\"vaultList\",\"outputs\":[{\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"name\",\"type\":\"string\"},{\"indexed\":false,\"name\":\"ipfsHash\",\"type\":\"string\"},{\"indexed\":false,\"name\":\"vaultAddress\",\"type\":\"address\"}],\"name\":\"VaultAdded\",\"type\":\"event\"},{\"constant\":false,\"inputs\":[{\"name\":\"_name\",\"type\":\"string\"},{\"name\":\"_ipfsHash\",\"type\":\"string\"}],\"name\":\"addNewVault\",\"outputs\":[{\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"getVaults\",\"outputs\":[{\"name\":\"\",\"type\":\"address[]\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"}]"
 
 // VaultManager is an auto generated Go binding around an Ethereum contract.
 type VaultManager struct {
@@ -224,25 +224,25 @@ func (_VaultManager *VaultManagerCallerSession) VaultList(arg0 string) (common.A
 	return _VaultManager.Contract.VaultList(&_VaultManager.CallOpts, arg0)
 }
 
-// AddNewVault is a paid mutator transaction binding the contract method 0x3f6378f4.
+// AddNewVault is a paid mutator transaction binding the contract method 0x086a2cd7.
 //
-// Solidity: function addNewVault(string _name) returns(address)
-func (_VaultManager *VaultManagerTransactor) AddNewVault(opts *bind.TransactOpts, _name string) (*types.Transaction, error) {
-	return _VaultManager.contract.Transact(opts, "addNewVault", _name)
+// Solidity: function addNewVault(string _name, string _ipfsHash) returns(address)
+func (_VaultManager *VaultManagerTransactor) AddNewVault(opts *bind.TransactOpts, _name string, _ipfsHash string) (*types.Transaction, error) {
+	return _VaultManager.contract.Transact(opts, "addNewVault", _name, _ipfsHash)
 }
 
-// AddNewVault is a paid mutator transaction binding the contract method 0x3f6378f4.
+// AddNewVault is a paid mutator transaction binding the contract method 0x086a2cd7.
 //
-// Solidity: function addNewVault(string _name) returns(address)
-func (_VaultManager *VaultManagerSession) AddNewVault(_name string) (*types.Transaction, error) {
-	return _VaultManager.Contract.AddNewVault(&_VaultManager.TransactOpts, _name)
+// Solidity: function addNewVault(string _name, string _ipfsHash) returns(address)
+func (_VaultManager *VaultManagerSession) AddNewVault(_name string, _ipfsHash string) (*types.Transaction, error) {
+	return _VaultManager.Contract.AddNewVault(&_VaultManager.TransactOpts, _name, _ipfsHash)
 }
 
-// AddNewVault is a paid mutator transaction binding the contract method 0x3f6378f4.
+// AddNewVault is a paid mutator transaction binding the contract method 0x086a2cd7.
 //
-// Solidity: function addNewVault(string _name) returns(address)
-func (_VaultManager *VaultManagerTransactorSession) AddNewVault(_name string) (*types.Transaction, error) {
-	return _VaultManager.Contract.AddNewVault(&_VaultManager.TransactOpts, _name)
+// Solidity: function addNewVault(string _name, string _ipfsHash) returns(address)
+func (_VaultManager *VaultManagerTransactorSession) AddNewVault(_name string, _ipfsHash string) (*types.Transaction, error) {
+	return _VaultManager.Contract.AddNewVault(&_VaultManager.TransactOpts, _name, _ipfsHash)
 }
 
 // VaultManagerVaultAddedIterator is returned from FilterVaultAdded and is used to iterate over the raw logs and unpacked data for VaultAdded events raised by the VaultManager contract.
@@ -315,13 +315,14 @@ func (it *VaultManagerVaultAddedIterator) Close() error {
 // VaultManagerVaultAdded represents a VaultAdded event raised by the VaultManager contract.
 type VaultManagerVaultAdded struct {
 	Name         string
+	IpfsHash     string
 	VaultAddress common.Address
 	Raw          types.Log // Blockchain specific contextual infos
 }
 
-// FilterVaultAdded is a free log retrieval operation binding the contract event 0x4104dba30cb4c9a6b91a5229bc9214a5710fa836b100dffdd213346c0de42dcb.
+// FilterVaultAdded is a free log retrieval operation binding the contract event 0x20d8de860363d7606c0dd46bddba8066bb98c4ad072b0fd3a4e20dbc29e5ee57.
 //
-// Solidity: event VaultAdded(string name, address vaultAddress)
+// Solidity: event VaultAdded(string name, string ipfsHash, address vaultAddress)
 func (_VaultManager *VaultManagerFilterer) FilterVaultAdded(opts *bind.FilterOpts) (*VaultManagerVaultAddedIterator, error) {
 
 	logs, sub, err := _VaultManager.contract.FilterLogs(opts, "VaultAdded")
@@ -331,9 +332,9 @@ func (_VaultManager *VaultManagerFilterer) FilterVaultAdded(opts *bind.FilterOpt
 	return &VaultManagerVaultAddedIterator{contract: _VaultManager.contract, event: "VaultAdded", logs: logs, sub: sub}, nil
 }
 
-// WatchVaultAdded is a free log subscription operation binding the contract event 0x4104dba30cb4c9a6b91a5229bc9214a5710fa836b100dffdd213346c0de42dcb.
+// WatchVaultAdded is a free log subscription operation binding the contract event 0x20d8de860363d7606c0dd46bddba8066bb98c4ad072b0fd3a4e20dbc29e5ee57.
 //
-// Solidity: event VaultAdded(string name, address vaultAddress)
+// Solidity: event VaultAdded(string name, string ipfsHash, address vaultAddress)
 func (_VaultManager *VaultManagerFilterer) WatchVaultAdded(opts *bind.WatchOpts, sink chan<- *VaultManagerVaultAdded) (event.Subscription, error) {
 
 	logs, sub, err := _VaultManager.contract.WatchLogs(opts, "VaultAdded")
@@ -368,9 +369,9 @@ func (_VaultManager *VaultManagerFilterer) WatchVaultAdded(opts *bind.WatchOpts,
 	}), nil
 }
 
-// ParseVaultAdded is a log parse operation binding the contract event 0x4104dba30cb4c9a6b91a5229bc9214a5710fa836b100dffdd213346c0de42dcb.
+// ParseVaultAdded is a log parse operation binding the contract event 0x20d8de860363d7606c0dd46bddba8066bb98c4ad072b0fd3a4e20dbc29e5ee57.
 //
-// Solidity: event VaultAdded(string name, address vaultAddress)
+// Solidity: event VaultAdded(string name, string ipfsHash, address vaultAddress)
 func (_VaultManager *VaultManagerFilterer) ParseVaultAdded(log types.Log) (*VaultManagerVaultAdded, error) {
 	event := new(VaultManagerVaultAdded)
 	if err := _VaultManager.contract.UnpackLog(event, "VaultAdded", log); err != nil {

@@ -35,6 +35,7 @@ func (r *ManagerResource) Path() string {
 // Routes bootstraps health routes
 func (r *ManagerResource) Routes() http.Handler {
 	router := chi.NewRouter()
+	// router.Use(render.SetContentType(render.ContentTypeJSON))
 
 	privKey, err := crypto.HexToECDSA(r.config.Keys.Admin)
 	if err != nil {
@@ -54,6 +55,7 @@ func (r *ManagerResource) Routes() http.Handler {
 	}
 
 	router.Get("/get-all-vaults", r.getAllAddresses(vaultManagerContract))
+	router.Post("/add-vault", r.addNewVault(vaultManagerContract))
 
 	log.WithFields(log.Fields{"Contract": "Vault Manager", "Address": r.config.Contracts.VaultManagerAddress}).Info("Created manager abstraction")
 
@@ -77,6 +79,37 @@ func (r *ManagerResource) getAllAddresses(vm *vaultmanager.Manager) http.Handler
 		}
 
 		json, err := json.Marshal(payload)
+
+		res.Header().Set("Content-Type", "application/json")
+		res.WriteHeader(200)
+		res.Write(json)
+	}
+}
+
+type AddNewVaultPayload struct {
+	IpfsHash string `json:"ipfsHash"`
+	Name     string `json:"name"`
+}
+
+func (r *ManagerResource) addNewVault(vm *vaultmanager.Manager) http.HandlerFunc {
+	return func(res http.ResponseWriter, req *http.Request) {
+		addNewVaultPayload := new(AddNewVaultPayload)
+		json.NewDecoder(req.Body).Decode(&addNewVaultPayload)
+
+		_, err := vm.AddNewVault(addNewVaultPayload.Name, addNewVaultPayload.IpfsHash)
+		if err != nil {
+			log.WithError(err).Error("GetAllVaultAddresses function on Game Manager contract failed")
+		}
+
+		payload := struct {
+			VaultStatus string `json:"vaultStatus"`
+			StatusCode  int    `json:"statusCode"`
+		}{
+			addNewVaultPayload.Name,
+			http.StatusCreated,
+		}
+
+		json, _ := json.Marshal(payload)
 
 		res.Header().Set("Content-Type", "application/json")
 		res.WriteHeader(200)

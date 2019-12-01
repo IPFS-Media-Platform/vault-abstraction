@@ -1118,6 +1118,31 @@
     "version": "0.5.8+commit.23d335f2.Emscripten.clang"
   },
   "networks": {
+    "4": {
+      "events": {
+        "0x8b4ef7d4e5bc8f098e6f637ac0acf4aee47b3f027efea6307264b06b4bc9d298": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "name",
+              "type": "string"
+            },
+            {
+              "indexed": true,
+              "name": "contractAddress",
+              "type": "address"
+            }
+          ],
+          "name": "ContractAdded",
+          "type": "event",
+          "signature": "0x8b4ef7d4e5bc8f098e6f637ac0acf4aee47b3f027efea6307264b06b4bc9d298"
+        }
+      },
+      "links": {},
+      "address": "0x3395f6c60dED340Bb5024493251DF782cDcb1f9B",
+      "transactionHash": "0xa8596ea4af5098f02aa405c0f984d3bd84aa8c2f30cf4279515fbfb2a6da6c67"
+    },
     "1575147803804": {
       "events": {
         "0x8b4ef7d4e5bc8f098e6f637ac0acf4aee47b3f027efea6307264b06b4bc9d298": {
@@ -1145,7 +1170,7 @@
     }
   },
   "schemaVersion": "3.0.16",
-  "updatedAt": "2019-11-30T21:05:02.697Z",
+  "updatedAt": "2019-12-01T15:34:28.701Z",
   "devdoc": {
     "methods": {}
   },

@@ -14,6 +14,7 @@ import (
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/go-chi/chi"
+	"github.com/go-chi/cors"
 )
 
 // ManagerResource implements server.Resource interface
@@ -39,6 +40,19 @@ func (r *ManagerResource) Path() string {
 func (r *ManagerResource) Routes() http.Handler {
 	router := chi.NewRouter()
 	// router.Use(render.SetContentType(render.ContentTypeJSON))
+
+	cors := cors.New(cors.Options{
+		// AllowedOrigins: []string{"https://foo.com"}, // Use this to allow specific origin hosts
+		AllowedOrigins: []string{"*"},
+		// AllowOriginFunc:  func(r *http.Request, origin string) bool { return true },
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
+		ExposedHeaders:   []string{"Link"},
+		AllowCredentials: true,
+		MaxAge:           300, // Maximum value not ignored by any of major browsers
+	})
+
+	router.Use(cors.Handler)
 
 	privKey, err := crypto.HexToECDSA(r.config.Keys.Admin)
 	if err != nil {
